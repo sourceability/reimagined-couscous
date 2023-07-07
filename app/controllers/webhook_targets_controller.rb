@@ -1,0 +1,70 @@
+class WebhookTargetsController < ApplicationController
+  before_action :set_webhook_target, only: %i[ show edit update destroy ]
+
+  # GET /webhook_targets or /webhook_targets.json
+  def index
+    @webhook_targets = WebhookTarget.all
+  end
+
+  # GET /webhook_targets/1 or /webhook_targets/1.json
+  def show
+  end
+
+  # GET /webhook_targets/new
+  def new
+    @webhook_target = WebhookTarget.new
+  end
+
+  # GET /webhook_targets/1/edit
+  def edit
+  end
+
+  # POST /webhook_targets or /webhook_targets.json
+  def create
+    @webhook_target = WebhookTarget.new(webhook_target_params)
+
+    respond_to do |format|
+      if @webhook_target.save
+        format.html { redirect_to webhook_target_url(@webhook_target), notice: "Webhook target was successfully created." }
+        format.json { render :show, status: :created, location: @webhook_target }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @webhook_target.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /webhook_targets/1 or /webhook_targets/1.json
+  def update
+    respond_to do |format|
+      if @webhook_target.update(webhook_target_params)
+        format.html { redirect_to webhook_target_url(@webhook_target), notice: "Webhook target was successfully updated." }
+        format.json { render :show, status: :ok, location: @webhook_target }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @webhook_target.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /webhook_targets/1 or /webhook_targets/1.json
+  def destroy
+    @webhook_target.destroy
+
+    respond_to do |format|
+      format.html { redirect_to webhook_targets_url, notice: "Webhook target was successfully destroyed." }
+      format.json { head :no_content }
+    end
+  end
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_webhook_target
+      @webhook_target = WebhookTarget.find(params[:id])
+    end
+
+    # Only allow a list of trusted parameters through.
+    def webhook_target_params
+      params.require(:webhook_target).permit(:repository, :token)
+    end
+end

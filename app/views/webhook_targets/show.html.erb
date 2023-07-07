@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @webhook_target %>
+
+<div>
+  <%= link_to "Edit this webhook target", edit_webhook_target_path(@webhook_target) %> |
+  <%= link_to "Back to webhook targets", webhook_targets_path %>
+
+  <%= button_to "Destroy this webhook target", @webhook_target, method: :delete %>
+</div>
