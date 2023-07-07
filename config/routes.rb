@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
   resources :webhook_targets
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+
+  get '/hooks/:token', to: 'webhook_targets#hooks', as: 'hooks'
 
   # Defines the root path route ("/")
-  # root "articles#index"
+  root "webhook_targets#index"
 end

@@ -46,6 +46,16 @@ class WebhookTargetsController < ApplicationController
       redirect_to webhook_targets_url, notice: "Webhook target was successfully destroyed."
   end
 
+  def hooks
+    @webhook_target = WebhookTarget.find_by(token: params[:token])
+    if @webhook_target.nil?
+      render plain: "Invalid token", status: :unauthorized
+    else
+      @webhook_target.update!(last_used_at: Time.now)
+      render plain: "OK"
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_webhook_target

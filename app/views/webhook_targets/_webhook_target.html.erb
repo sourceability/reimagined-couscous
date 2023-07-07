@@ -5,8 +5,8 @@
   </p>
 
   <p>
-    <strong>Token:</strong>
-    <%= webhook_target.token %>
+    <strong>Webhook URL</strong>
+    <%= link_to nil, request.base_url + hooks_path(webhook_target.token) %>
   </p>
 
 </div>
