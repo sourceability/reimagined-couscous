@@ -23,27 +23,19 @@ class WebhookTargetsController < ApplicationController
   def create
     @webhook_target = WebhookTarget.new(webhook_target_params)
 
-    respond_to do |format|
-      if @webhook_target.save
-        format.html { redirect_to webhook_target_url(@webhook_target), notice: "Webhook target was successfully created." }
-        format.json { render :show, status: :created, location: @webhook_target }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @webhook_target.errors, status: :unprocessable_entity }
-      end
+    if @webhook_target.save
+      redirect_to webhook_target_url(@webhook_target), notice: "Webhook target was successfully created."
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /webhook_targets/1 or /webhook_targets/1.json
   def update
-    respond_to do |format|
-      if @webhook_target.update(webhook_target_params)
-        format.html { redirect_to webhook_target_url(@webhook_target), notice: "Webhook target was successfully updated." }
-        format.json { render :show, status: :ok, location: @webhook_target }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @webhook_target.errors, status: :unprocessable_entity }
-      end
+    if @webhook_target.update(webhook_target_params)
+      redirect_to webhook_target_url(@webhook_target), notice: "Webhook target was successfully updated."
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -51,10 +43,7 @@ class WebhookTargetsController < ApplicationController
   def destroy
     @webhook_target.destroy
 
-    respond_to do |format|
-      format.html { redirect_to webhook_targets_url, notice: "Webhook target was successfully destroyed." }
-      format.json { head :no_content }
-    end
+      redirect_to webhook_targets_url, notice: "Webhook target was successfully destroyed."
   end
 
   private
@@ -65,6 +54,6 @@ class WebhookTargetsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def webhook_target_params
-      params.require(:webhook_target).permit(:repository, :token)
+      params.require(:webhook_target).permit(:repository)
     end
 end
