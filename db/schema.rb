@@ -10,12 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_07_195728) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_07_204442) do
   create_table "webhook_targets", force: :cascade do |t|
     t.string "repository"
     t.string "token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "last_called_at"
     t.index ["token"], name: "index_webhook_targets_on_token", unique: true
   end
 

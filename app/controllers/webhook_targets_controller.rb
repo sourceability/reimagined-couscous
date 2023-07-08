@@ -1,4 +1,6 @@
 class WebhookTargetsController < ApplicationController
+  skip_before_action :verify_authenticity_token, only: :hooks
+
   before_action :set_webhook_target, only: %i[ show edit update destroy ]
 
   # GET /webhook_targets or /webhook_targets.json
@@ -51,7 +53,8 @@ class WebhookTargetsController < ApplicationController
     if @webhook_target.nil?
       render plain: "Invalid token", status: :unauthorized
     else
-      @webhook_target.update!(last_used_at: Time.now)
+      NotifySlackJob.perform_later(user: params[:user][:name], author_id: params[:merge_request][:author_id], comment: "test")
+      @webhook_target.update!(last_called_at: Time.now)
       render plain: "OK"
     end
   end

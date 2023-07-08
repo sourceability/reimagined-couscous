@@ -1,8 +1,9 @@
 class WebhookTarget < ApplicationRecord
     after_initialize :generate_token
 
+    attr_accessor :repository, :token, :last_called_at
+
     validates :token, presence: true, uniqueness: true
-    validates :repository, presence: true
 
     private
     def generate_token
