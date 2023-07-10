@@ -73,3 +73,4 @@ end
 
 gem 'resque'
 gem 'gitlab'
+gem 'dotenv-rails', groups: [:development, :test]
