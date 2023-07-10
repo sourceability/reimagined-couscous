@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_07_204442) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_08_205602) do
+  create_table "gitlab_users", force: :cascade do |t|
+    t.string "name"
+    t.integer "gitlab_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["gitlab_id"], name: "index_gitlab_users_on_gitlab_id", unique: true
+  end
+
   create_table "webhook_targets", force: :cascade do |t|
     t.string "repository"
     t.string "token"
