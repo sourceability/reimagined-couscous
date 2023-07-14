@@ -37,7 +37,7 @@ class WebhookTargetsController < ApplicationController
   # PATCH/PUT /webhook_targets/1 or /webhook_targets/1.json
   def update
     if @webhook_target.update(webhook_target_params)
-      false[:info] = "Webhook target was successfully updated."
+      flash[:info] = "Webhook target was successfully updated."
       redirect_to webhook_target_url(@webhook_target)
     else
       render :edit, status: :unprocessable_entity
