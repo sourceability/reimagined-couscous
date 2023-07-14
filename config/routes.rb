@@ -6,6 +6,9 @@ Rails.application.routes.draw do
 
   post '/hooks/:token', to: 'webhook_targets#hooks', as: 'hooks'
 
+  get '/auth/:provider/callback', to: 'sessions#create'
+  delete '/logout', to: 'sessions#destroy'
+
   # Defines the root path route ("/")
   root "webhook_targets#index"
 end

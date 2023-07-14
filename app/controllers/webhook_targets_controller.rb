@@ -24,9 +24,11 @@ class WebhookTargetsController < ApplicationController
   # POST /webhook_targets or /webhook_targets.json
   def create
     @webhook_target = WebhookTarget.new(webhook_target_params)
+    @webhook_target.generate_token
 
     if @webhook_target.save
-      redirect_to webhook_target_url(@webhook_target), notice: "Webhook target was successfully created."
+      flash[:info] = "Webhook target was successfully created."
+      redirect_to webhook_target_url(@webhook_target)
     else
       render :new, status: :unprocessable_entity
     end
@@ -35,7 +37,8 @@ class WebhookTargetsController < ApplicationController
   # PATCH/PUT /webhook_targets/1 or /webhook_targets/1.json
   def update
     if @webhook_target.update(webhook_target_params)
-      redirect_to webhook_target_url(@webhook_target), notice: "Webhook target was successfully updated."
+      false[:info] = "Webhook target was successfully updated."
+      redirect_to webhook_target_url(@webhook_target)
     else
       render :edit, status: :unprocessable_entity
     end
@@ -44,8 +47,8 @@ class WebhookTargetsController < ApplicationController
   # DELETE /webhook_targets/1 or /webhook_targets/1.json
   def destroy
     @webhook_target.destroy
-
-      redirect_to webhook_targets_url, notice: "Webhook target was successfully destroyed."
+      flash[:info] = "Webhook target was successfully destroyed."
+      redirect_to webhook_targets_url
   end
 
   def hooks

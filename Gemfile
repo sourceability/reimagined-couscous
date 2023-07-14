@@ -74,3 +74,11 @@ end
 gem 'resque'
 gem 'gitlab'
 gem 'dotenv-rails', groups: [:development, :test]
+
+gem 'omniauth'
+gem 'omniauth-rails_csrf_protection'
+gem 'omniauth-gitlab'
+
+gem "cssbundling-rails", "~> 1.2"
+
+gem "jsbundling-rails", "~> 1.1"
