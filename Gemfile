@@ -82,3 +82,5 @@ gem 'omniauth-gitlab'
 gem "cssbundling-rails", "~> 1.2"
 
 gem "jsbundling-rails", "~> 1.1"
+
+gem "repost", "~> 0.4.1"

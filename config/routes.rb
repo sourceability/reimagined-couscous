@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'home/root'
   require 'resque/server'
   mount Resque::Server, at: '/jobs'
 
@@ -10,5 +11,5 @@ Rails.application.routes.draw do
   delete '/logout', to: 'sessions#destroy'
 
   # Defines the root path route ("/")
-  root "webhook_targets#index"
+  root "home#root"
 end

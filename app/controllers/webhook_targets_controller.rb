@@ -1,4 +1,5 @@
 class WebhookTargetsController < ApplicationController
+  before_action :require_login
   skip_before_action :verify_authenticity_token, only: :hooks
 
   before_action :set_webhook_target, only: %i[ show edit update destroy ]
