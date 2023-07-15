@@ -1,0 +1,24 @@
+<nav class="navbar navbar-expand-lg bg-body-secondary">
+    <div class="container-fluid">
+        <%= link_to 'MySlacker', root_path, class: 'navbar-brand' %>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav me-auto mb-2 mb-lg-0">
+                <%= link_to 'Webhook Targets', webhook_targets_path, class: 'nav-link' %>
+            </div>
+            <% if current_user %>
+                <form class="d-flex" role="login">
+                    <%= image_tag current_user.image_url, alt: current_user.name %>
+                    <%= button_to 'Log Out', logout_path, method: :delete, class: 'btn btn-danger', type: 'button' %>
+                </form>
+            <% else %>
+                <form class="d-flex" role="login">
+                    <%= button_to 'Login', '/auth/gitlab', data: {turbo: false}, class: 'btn btn-primary', type: 'button' %>
+                </form>
+            <% end %>
+        </div>
+    </div>
+</nav>

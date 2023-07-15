@@ -25,7 +25,6 @@ class WebhookTargetsController < ApplicationController
   # POST /webhook_targets or /webhook_targets.json
   def create
     @webhook_target = WebhookTarget.new(webhook_target_params)
-    @webhook_target.generate_token
 
     if @webhook_target.save
       flash[:info] = "Webhook target was successfully created."
@@ -57,8 +56,8 @@ class WebhookTargetsController < ApplicationController
     if @webhook_target.nil?
       render plain: "Invalid token", status: :unauthorized
     else
-      user = GitlabUser.create_or_find_by(name: user_params[:name], gitlab_id: user_params[:id])
-      # merge_request_author = GitlabUser.create_or_find_by(name: merge_request_params[:name], gitlab_id: merge_request_params[:id])
+      user = User.create_or_find_by(provider: 'gitlab', uid: user_params[:id])
+      merge_request_author = User.create_or_find_by(provider: 'gitlab', uid: merge_request_params[:id])
       NotifySlackJob.perform_later(user: user, author: merge_request_author, comment: params[:object_attributes][:note])
       @webhook_target.update!(last_called_at: Time.now)
       render plain: "OK"
@@ -75,12 +74,4 @@ class WebhookTargetsController < ApplicationController
     def webhook_target_params
       params.require(:webhook_target).permit(:repository)
     end
-
-    def user_params
-      params.require(:user).permit(:name, :id, :username, :avatar_url, :email)
-    end
-
-    # def merge_request_params
-    #   params.require(:merge_request).require(:author).permit(:name, :email)
-    # end
 end
