@@ -6,7 +6,7 @@ class WebhookTargetsController < ApplicationController
 
   # GET /webhook_targets or /webhook_targets.json
   def index
-    @webhook_targets = WebhookTarget.all
+    @webhook_targets = WebhookTarget.all_for_user(current_user)
   end
 
   # GET /webhook_targets/1 or /webhook_targets/1.json
@@ -25,6 +25,7 @@ class WebhookTargetsController < ApplicationController
   # POST /webhook_targets or /webhook_targets.json
   def create
     @webhook_target = WebhookTarget.new(webhook_target_params)
+    @webhook_target.user = current_user
 
     if @webhook_target.save
       flash[:info] = "Webhook target was successfully created."
@@ -54,7 +55,7 @@ class WebhookTargetsController < ApplicationController
   def hooks
     @webhook_target = WebhookTarget.find_by(token: params[:token])
     if @webhook_target.nil?
-      render plain: "Invalid token", status: :unauthorized
+      render plain: "Invalid webhook token", status: :unauthorized
     else
       user = User.create_or_find_by(provider: 'gitlab', uid: user_params[:id])
       merge_request_author = User.create_or_find_by(provider: 'gitlab', uid: merge_request_params[:id])
@@ -67,7 +68,12 @@ class WebhookTargetsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_webhook_target
-      @webhook_target = WebhookTarget.find(params[:id])
+      begin
+        @webhook_target = WebhookTarget.all_for_user(current_user).find(params[:id])
+      rescue ActiveRecord::RecordNotFound
+        flash[:warning] = "Webhook target not found"
+        redirect_to webhook_targets_url
+      end
     end
 
     # Only allow a list of trusted parameters through.
